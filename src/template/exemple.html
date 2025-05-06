@@ -1,0 +1,15 @@
+         <% posts.forEach(post => { %>
+                <div class="post-header">
+                    <% if (post.User.Profil && post.User.Profil.urlPhoto) { %>
+                        <img src="<%= post.User.Profil.urlPhoto %>" alt="User Avatar">
+                    <% } else { %>
+                        <img src="/static/images/images/FB_IMG_1727683607286.jpg" alt="User Avatar">  <!-- Image par défaut si pas de profil -->
+                    <% } %>
+                    <div class="username"><%= post.User.prenom %></div>
+                </div>
+        <%
+        });
+        %> 
+
+
+        
