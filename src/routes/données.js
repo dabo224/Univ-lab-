@@ -9,19 +9,16 @@ module.exports = (app) => {
     app.get('/data/:userId', (req, res) => {
         const userId = req.params.userId; // 🔹 Récupère l'ID de l'utilisateur depuis l'URL
       
-        User.findOne({  // 🔹 Utilise `findOne` au lieu de `findAll` car on récupère UN seul utilisateur
-            where: { id: userId },  // 🔹 Filtre par ID d'utilisateur
-
-            include : [
+        User.findOne({
+            where: { id: userId },
+            include: [
                 {
-                model : Profil,
-                attributes : ['id','urlPhoto']
+                    model: Profil,
+                    attributes: ['id','urlPhoto']
                 },
                 {
-
                     model: Post,
-                    attributes: {
-                    },
+                    attributes: [],
                     include: [
                         {
                             model : PostImage,
@@ -29,7 +26,7 @@ module.exports = (app) => {
                         },
                         {
                             model : User,
-                            attributes : {},
+                            attributes : [],
                             include : [
                                 {
                                     model : Profil,
@@ -59,9 +56,8 @@ module.exports = (app) => {
                         }
                     ]
                 }
-            
             ],
-            // group: ['User.id', 'Posts.id', 'Posts->Comments.id','Posts->User.id','Posts->User->Profil.id' , 'Posts->Comments->User.id','Posts->Comments->User->Profil.id','Posts->Likes.id', 'Posts->Likes->User.id'] // 🔹 Groupement pour éviter les doublons
+            distinct: true  // 🔹 Ajoute ça au lieu du group
         })
         .then(user => {
             if (!user) {
